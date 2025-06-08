@@ -1,6 +1,8 @@
 package com.esoft.teste_spring.models;
 
 
+import java.util.List;
+
 import com.esoft.teste_spring.DTOs.VilaDTO;
 
 import jakarta.persistence.Column;
@@ -10,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,9 +37,9 @@ public class Vila {
     @Column(nullable = false)
     private int nrHabitantes;
     
-    // @ManyToOne
-    // @JoinColumn(name = "vila_id")
-    // public Ninja ninja;
+
+    // @OneToMany(mappedBy = "vila")
+    // private List<Ninja> ninjas;
 
     public Vila(VilaDTO vila){
         this.id = vila.id();
