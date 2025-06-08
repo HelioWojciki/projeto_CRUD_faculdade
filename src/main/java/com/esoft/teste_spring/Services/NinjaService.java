@@ -9,8 +9,10 @@ import com.esoft.teste_spring.DTOs.NinjaDTO;
 import com.esoft.teste_spring.Exceptions.NaoEncontradoException;
 import com.esoft.teste_spring.models.Missao;
 import com.esoft.teste_spring.models.Ninja;
+import com.esoft.teste_spring.models.Vila;
 import com.esoft.teste_spring.repositories.MissaoRepository;
 import com.esoft.teste_spring.repositories.NinjaRepository;
+import com.esoft.teste_spring.repositories.VilaRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -19,10 +21,12 @@ public class NinjaService {
 
     private final NinjaRepository ninjaRepository;
     private final MissaoRepository missaoRepository;
+    private final VilaRepository vilaRepository;
 
-    public NinjaService(NinjaRepository ninjaRepository, MissaoRepository missaoRepository) {
+    public NinjaService(NinjaRepository ninjaRepository, MissaoRepository missaoRepository, VilaRepository vilaRepository) {
         this.ninjaRepository = ninjaRepository;
         this.missaoRepository = missaoRepository;
+        this.vilaRepository = vilaRepository;
     }
 
     public List<NinjaDTO> listar() {
@@ -32,6 +36,15 @@ public class NinjaService {
     public NinjaDTO salvar(NinjaDTO ninja) {
 
         Ninja ninjaEntity = new Ninja(ninja);
+
+        if (ninja.vilaId() != null) {
+            Optional<Vila> vila = vilaRepository.findById(ninja.vilaId());
+            if (vila.isPresent()) {
+                ninjaEntity.setVila(vila.get());
+            } else {
+                throw new NaoEncontradoException("Vila com id " + ninja.vilaId() + " não foi encontrada!");
+            }
+        }
 
         if (ninja.missaoId() != null) {
             Missao missao = missaoRepository.findById(ninja.missaoId()).orElseThrow(
@@ -45,7 +58,7 @@ public class NinjaService {
     @Transactional
     public NinjaDTO salvar(Long id, NinjaDTO ninja) {
         ninjaRepository.findById(id)
-                .orElseThrow(() -> new NaoEncontradoException("Ninja com id " + id + " não foi encontrado!"));
+                .orElseThrow(() -> new NaoEncontradoException("Ninja com o id " + id + " não foi encontrado!"));
 
         Ninja ninjaEntity = new Ninja(ninja);
         ninjaEntity.setId(id);
@@ -53,6 +66,11 @@ public class NinjaService {
         if (ninja.missaoId() != null) {
             Missao missao = missaoRepository.findById(ninja.missaoId()).orElse(null);
             ninjaEntity.setMissao(missao);
+        }
+
+        if (ninja.vilaId() != null) {
+            Vila vila = vilaRepository.findById(ninja.vilaId()).orElse(null);
+            ninjaEntity.setVila(vila);
         }
 
         return new NinjaDTO(ninjaRepository.save(ninjaEntity));

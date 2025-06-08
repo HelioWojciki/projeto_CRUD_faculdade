@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.esoft.teste_spring.models.Ninja;
+import com.esoft.teste_spring.models.Vila;
+
 import java.util.List;
 
 @Repository
@@ -14,5 +16,7 @@ public interface NinjaRepository extends JpaRepository<Ninja, Long> {
     List<Ninja> findByIdadeGreaterThan(int idade);
 
     List<Ninja> findByNomeContainingIgnoreCase(String nome);
+
+    List<Ninja> findByVila(Vila vila);
 
 }

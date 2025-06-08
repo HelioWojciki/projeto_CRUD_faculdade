@@ -26,19 +26,21 @@ public class MissaoService {
     }
 
     public MissaoDTO salvar(MissaoDTO missao) {
-
         Missao missaoEntity = new Missao(missao);
 
-        List<Ninja> ninjas = ninjaRepository.findAllById(missao.ninjasId()).stream()
-                .map(ninja -> {
-                    ninja.setMissao(missaoEntity);
-                    return ninja;
-                }).toList();
+        List<Ninja> ninjas = List.of(); // lista vazia por padrão, se for null
+
+        if (missao.ninjasId() != null && !missao.ninjasId().isEmpty()) { // se conter 
+            ninjas = ninjaRepository.findAllById(missao.ninjasId()).stream()
+                .peek(ninja -> ninja.setMissao(missaoEntity))
+                .toList();
+        }
 
         missaoEntity.setNinjas(ninjas);
 
         return new MissaoDTO(missaoRepository.save(missaoEntity));
     }
+
 
     public MissaoDTO salvar(Long id, MissaoDTO missao) {
         missaoRepository.findById(id).orElseThrow(() -> new NaoEncontradoException("Missao não encontrada!"));

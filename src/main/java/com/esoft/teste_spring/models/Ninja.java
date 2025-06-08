@@ -33,21 +33,28 @@ public class Ninja {
     @Column(nullable = false)
     private String nome;
 
+    private String cla;
+
     @Column(nullable = false)
     private int idade;
-    private String cla;
-    private String vila;
+
+    
+    // private String vila; // transformar em um model
 
     @ManyToOne
     @JoinColumn(name = "missao_id")
     private Missao missao;
 
+    @ManyToOne
+    @JoinColumn(name = "vila_id")
+    private Vila vila;
+    
     public Ninja(NinjaDTO ninja) {
         this.id = ninja.id();
         this.nome = ninja.nome();
         this.idade = ninja.idade();
         this.cla = ninja.cla();
-        this.vila = ninja.vila();
+        // this.vila = ninja.vila(); // remover pois será uma model
     }
 
 }

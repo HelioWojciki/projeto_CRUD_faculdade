@@ -7,7 +7,7 @@ public record NinjaDTO(
         String nome,
         int idade,
         String cla,
-        String vila,
+        Long vilaId, // Alterado de String para Vila
         Long missaoId) {
 
     public NinjaDTO(Ninja ninja) {
@@ -16,7 +16,7 @@ public record NinjaDTO(
                 ninja.getNome(),
                 ninja.getIdade(),
                 ninja.getCla(),
-                ninja.getVila(),
+                ninja.getVila() != null ? ninja.getVila().getId() : null,
                 ninja.getMissao() != null ? ninja.getMissao().getId() : null);
     }
 }
