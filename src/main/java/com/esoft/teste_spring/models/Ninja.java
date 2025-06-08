@@ -1,5 +1,7 @@
 package com.esoft.teste_spring.models;
 
+import java.util.List;
+
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -11,6 +13,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinColumns;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -48,6 +53,12 @@ public class Ninja {
     @ManyToOne
     @JoinColumn(name = "vila_id")
     private Vila vila;
+
+    @ManyToMany
+    @JoinTable(name = "ninjas_jutsus",
+                joinColumns = @JoinColumn(name = "ninja_id"),
+                inverseJoinColumns = @JoinColumn(name = "jutsu_id"))             
+    private List<Jutsu> jutsus;
     
     public Ninja(NinjaDTO ninja) {
         this.id = ninja.id();
