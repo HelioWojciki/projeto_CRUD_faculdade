@@ -52,4 +52,5 @@ public class NinjaController {
         ninjaService.deletar(id);
     }
 
+
 }

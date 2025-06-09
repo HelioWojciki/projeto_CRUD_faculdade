@@ -1,5 +1,7 @@
 package com.esoft.teste_spring.DTOs;
 
+import java.util.List;
+
 import com.esoft.teste_spring.models.Ninja;
 
 public record NinjaDTO(
@@ -8,7 +10,8 @@ public record NinjaDTO(
         int idade,
         String cla,
         Long vilaId, // Alterado de String para Vila
-        Long missaoId) {
+        Long missaoId,
+        List<Long> jutsuIds) {
 
     public NinjaDTO(Ninja ninja) {
         this(
@@ -17,6 +20,14 @@ public record NinjaDTO(
                 ninja.getIdade(),
                 ninja.getCla(),
                 ninja.getVila() != null ? ninja.getVila().getId() : null,
-                ninja.getMissao() != null ? ninja.getMissao().getId() : null);
+                ninja.getMissao() != null ? ninja.getMissao().getId() : null,
+                
+                ninja.getJutsus() != null
+                        ? ninja.getJutsus()
+                                .stream()
+                                .map(jutsu -> jutsu.getId()).toList()
+                                : List.of() // passa uma lista vazia e não null, evitando quebrar
+                
+                );
     }
 }

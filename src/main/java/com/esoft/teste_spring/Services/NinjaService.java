@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.esoft.teste_spring.DTOs.NinjaDTO;
 import com.esoft.teste_spring.Exceptions.NaoEncontradoException;
+import com.esoft.teste_spring.models.Jutsu;
 import com.esoft.teste_spring.models.Missao;
 import com.esoft.teste_spring.models.Ninja;
 import com.esoft.teste_spring.models.Vila;
+import com.esoft.teste_spring.repositories.JutsuRepository;
 import com.esoft.teste_spring.repositories.MissaoRepository;
 import com.esoft.teste_spring.repositories.NinjaRepository;
 import com.esoft.teste_spring.repositories.VilaRepository;
@@ -22,11 +24,13 @@ public class NinjaService {
     private final NinjaRepository ninjaRepository;
     private final MissaoRepository missaoRepository;
     private final VilaRepository vilaRepository;
+    JutsuRepository jutsuRepository;
 
-    public NinjaService(NinjaRepository ninjaRepository, MissaoRepository missaoRepository, VilaRepository vilaRepository) {
+    public NinjaService(NinjaRepository ninjaRepository, MissaoRepository missaoRepository, VilaRepository vilaRepository, JutsuRepository jutsuRepository) {
         this.ninjaRepository = ninjaRepository;
         this.missaoRepository = missaoRepository;
         this.vilaRepository = vilaRepository;
+        this.jutsuRepository = jutsuRepository;
     }
 
     public List<NinjaDTO> listar() {
@@ -72,6 +76,10 @@ public class NinjaService {
             Vila vila = vilaRepository.findById(ninja.vilaId()).orElse(null);
             ninjaEntity.setVila(vila);
         }
+
+        // if (ninja.jutsuIds() != null) {
+        //     List<Jutsu> listaJustus = jutsuRepository.findById(id)//Continuar, estou pegando a lista de ids que não veio nulo e ?? buscando pra ver se existe no repositório de jutsus ? se sim eu adiciono esse jutsu a esse ninja?
+        // }
 
         return new NinjaDTO(ninjaRepository.save(ninjaEntity));
     }
