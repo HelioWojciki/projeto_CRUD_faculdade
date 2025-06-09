@@ -1,5 +1,7 @@
 package com.esoft.teste_spring.DTOs;
 
+import java.util.List;
+
 import com.esoft.teste_spring.models.Jutsu;
 
 public record JutsuDTO(
