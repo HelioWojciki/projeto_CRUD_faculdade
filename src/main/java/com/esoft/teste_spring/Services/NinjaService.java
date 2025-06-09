@@ -77,9 +77,11 @@ public class NinjaService {
             ninjaEntity.setVila(vila);
         }
 
-        // if (ninja.jutsuIds() != null) {
-        //     List<Jutsu> listaJustus = jutsuRepository.findById(id)//Continuar, estou pegando a lista de ids que não veio nulo e ?? buscando pra ver se existe no repositório de jutsus ? se sim eu adiciono esse jutsu a esse ninja?
-        // }
+        if (ninja.jutsuIds() != null) {
+            List<Jutsu> jutsus = jutsuRepository.findAllById(ninja.jutsuIds());
+            ninjaEntity.setJutsus(jutsus);    
+            // jutsuRepository.saveAll(jutsus);        
+        }
 
         return new NinjaDTO(ninjaRepository.save(ninjaEntity));
     }
