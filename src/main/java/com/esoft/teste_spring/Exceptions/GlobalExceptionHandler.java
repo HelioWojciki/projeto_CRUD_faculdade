@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler { // Trabalho com handlers
 
     @ExceptionHandler(NaoEncontradoException.class)
     public ResponseEntity<Object> NaoEncontradoExceprionHndler(NaoEncontradoException ex) {
