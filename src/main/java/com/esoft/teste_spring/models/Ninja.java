@@ -54,10 +54,13 @@ public class Ninja {
     @JoinColumn(name = "vila_id")
     private Vila vila;
 
+    // Ajuste para uma relação ;) n:n com Jutsu
     @ManyToMany
-    @JoinTable(name = "ninjas_jutsus",
-                joinColumns = @JoinColumn(name = "ninja_id"),
-                inverseJoinColumns = @JoinColumn(name = "jutsu_id"))             
+    @JoinTable(
+        name = "ninjas_jutsus",
+        joinColumns = @JoinColumn(name = "ninja_id"),
+        inverseJoinColumns = @JoinColumn(name = "jutsu_id") // tabela para relacionar ninjas e jutsus
+    )
     private List<Jutsu> jutsus;
     
     public Ninja(NinjaDTO ninja) {
@@ -66,6 +69,14 @@ public class Ninja {
         this.idade = ninja.idade();
         this.cla = ninja.cla();
         // this.vila = ninja.vila(); // remover pois será uma model
+    }
+
+    public Ninja(NinjaDTO ninja, List<Jutsu> jutsus) {
+        this.id = ninja.id();
+        this.nome = ninja.nome();
+        this.idade = ninja.idade();
+        this.cla = ninja.cla();
+        this.jutsus = jutsus;
     }
 
 }

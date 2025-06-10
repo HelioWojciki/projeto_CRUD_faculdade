@@ -56,6 +56,15 @@ public class NinjaService {
             ninjaEntity.setMissao(missao);
         }
 
+        // Verifica se a lista de IDs de jutsus não é nula e não está vazia
+        // Se for nula ou vazia, define uma lista vazia para evitar NullPointerException
+        if (ninja.jutsuIds() != null && !ninja.jutsuIds().isEmpty()) {
+            List<Jutsu> jutsus = jutsuRepository.findAllById(ninja.jutsuIds());
+            ninjaEntity.setJutsus(jutsus);
+        } else {
+            ninjaEntity.setJutsus(List.of());
+        }
+
         return new NinjaDTO(ninjaRepository.save(ninjaEntity));
     }
 
@@ -77,12 +86,12 @@ public class NinjaService {
             ninjaEntity.setVila(vila);
         }
 
-        if (ninja.jutsuIds() != null) {
+        if (ninja.jutsuIds() != null && !ninja.jutsuIds().isEmpty()) {
             List<Jutsu> jutsus = jutsuRepository.findAllById(ninja.jutsuIds());
-            ninjaEntity.setJutsus(jutsus);    
-            // jutsuRepository.saveAll(jutsus);        
+            ninjaEntity.setJutsus(jutsus);
+        } else {
+            ninjaEntity.setJutsus(List.of());
         }
-
         return new NinjaDTO(ninjaRepository.save(ninjaEntity));
     }
 
