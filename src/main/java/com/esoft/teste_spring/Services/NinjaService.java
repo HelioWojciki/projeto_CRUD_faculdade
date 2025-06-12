@@ -6,7 +6,10 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.esoft.teste_spring.DTOs.NinjaDTO;
+import com.esoft.teste_spring.Exceptions.AtributoInvalidoException;
+import com.esoft.teste_spring.Exceptions.LimiteAtingidoException;
 import com.esoft.teste_spring.Exceptions.NaoEncontradoException;
+import com.esoft.teste_spring.Exceptions.OperacaoNaoPermitidaException;
 import com.esoft.teste_spring.models.Jutsu;
 import com.esoft.teste_spring.models.Missao;
 import com.esoft.teste_spring.models.Ninja;
@@ -65,6 +68,14 @@ public class NinjaService {
             ninjaEntity.setJutsus(List.of());
         }
 
+        if (ninja.jutsuIds() != null && ninja.jutsuIds().size() > 5) {
+            throw new LimiteAtingidoException("Um ninja não pode ter mais que 5 jutsus.");
+        }
+
+        if (ninja.idade() < 0) {
+            throw new AtributoInvalidoException("A idade do ninja não pode ser negativa.");
+        }
+
         return new NinjaDTO(ninjaRepository.save(ninjaEntity));
     }
 
@@ -92,6 +103,15 @@ public class NinjaService {
         } else {
             ninjaEntity.setJutsus(List.of());
         }
+
+        if (ninja.jutsuIds() != null && ninja.jutsuIds().size() > 5) {
+            throw new LimiteAtingidoException("Um ninja não pode ter mais que 5 jutsus.");
+        }
+
+        if (ninja.idade() < 0) {
+            throw new AtributoInvalidoException("A idade do ninja não pode ser negativa.");
+        }
+        
         return new NinjaDTO(ninjaRepository.save(ninjaEntity));
     }
 
@@ -101,8 +121,13 @@ public class NinjaService {
     }
 
     public void deletar(Long id) {
-        ninjaRepository.findById(id)
-                .orElseThrow(() -> new NaoEncontradoException("Ninja com id " + id + " não foi encontrado!"));
+        Ninja ninja = ninjaRepository.findById(id)
+        .orElseThrow(() -> new NaoEncontradoException("Ninja com id " + id + " não foi encontrado!"));
+
+        if (ninja.getMissao() != null && "EM ANDAMENTO".equalsIgnoreCase(ninja.getMissao().getStatus())) {
+            throw new OperacaoNaoPermitidaException("Não é possível excluir um ninja com missão em andamento.");
+        }
+
         ninjaRepository.deleteById(id);
     }
 
