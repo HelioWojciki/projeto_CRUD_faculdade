@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.esoft.teste_spring.DTOs.MissaoDTO;
+import com.esoft.teste_spring.Exceptions.AtributoInvalidoException;
 import com.esoft.teste_spring.Exceptions.DeleteNegadoException;
 import com.esoft.teste_spring.Exceptions.NaoEncontradoException;
+import com.esoft.teste_spring.enums.StatusMissao;
 import com.esoft.teste_spring.models.Missao;
 import com.esoft.teste_spring.models.Ninja;
 import com.esoft.teste_spring.repositories.MissaoRepository;
@@ -27,6 +29,10 @@ public class MissaoService {
 
     public MissaoDTO salvar(MissaoDTO missao) {
         Missao missaoEntity = new Missao(missao);
+        if (!StatusMissao.isValido(missao.status())) {
+            throw new AtributoInvalidoException("Status inválido! Use: PENDENTE, EM ANDAMENTO ou CONCLUIDA.");
+        }
+        missaoEntity.setStatus(missao.status());
 
         List<Ninja> ninjas = List.of(); // lista vazia por padrão, se for null
 
@@ -46,6 +52,10 @@ public class MissaoService {
         missaoRepository.findById(id).orElseThrow(() -> new NaoEncontradoException("Missao não encontrada!"));
         Missao missaoEntity = new Missao(missao);
         missaoEntity.setId(id);
+        if (!StatusMissao.isValido(missao.status())) {
+            throw new AtributoInvalidoException("Status inválido! Use: PENDENTE, EM ANDAMENTO ou CONCLUIDA.");
+        }
+        missaoEntity.setStatus(missao.status());
 
         List<Ninja> ninjas = ninjaRepository.findAllById(missao.ninjasId()).stream()
                 .map(ninja -> {

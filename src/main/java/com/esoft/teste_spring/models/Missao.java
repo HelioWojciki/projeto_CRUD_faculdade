@@ -36,7 +36,8 @@ public class Missao {
     private String nome;
     private String descricao;
     private String dificuldade;
-
+    private String status;
+    
     @OneToMany(mappedBy = "missao")
     private List<Ninja> ninjas;
 
@@ -45,6 +46,6 @@ public class Missao {
         this.nome = missao.nome();
         this.descricao = missao.descricao();
         this.dificuldade = missao.dificuldade();
+        this.status = missao.status();
     }
-
 }

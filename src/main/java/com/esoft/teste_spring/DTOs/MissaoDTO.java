@@ -9,6 +9,7 @@ public record MissaoDTO(
                 String nome,
                 String descricao,
                 String dificuldade,
+                String status,
                 List<Long> ninjasId) {
 
         public MissaoDTO(Missao missao) {
@@ -17,6 +18,7 @@ public record MissaoDTO(
                                 missao.getNome(),
                                 missao.getDescricao(),
                                 missao.getDificuldade(),
+                                missao.getStatus(),
                                 missao.getNinjas().stream().map(ninja -> ninja.getId()).toList());
         }
 
