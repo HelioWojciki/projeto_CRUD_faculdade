@@ -84,5 +84,25 @@ public class GlobalExceptionHandler { // Trabalho com handlers
         body.put("status", HttpStatus.BAD_REQUEST.value());
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(JutsuProibidoException.class)
+    public ResponseEntity<Object> handleJutsuProibido(JutsuProibidoException ex) {
+        LinkedHashMap<String, Object> body = new LinkedHashMap<>();
+        body.put("message", ex.getMessage());
+        body.put("timestamp", new Date());
+        body.put("error", "Uso de jutsu proibido");
+        body.put("status", HttpStatus.FORBIDDEN.value());
+        
+        return new ResponseEntity<>(body, HttpStatus.FORBIDDEN);
+    }
+    @ExceptionHandler(MissaoInvalidaException.class)
+    public ResponseEntity<Object> handleMissaoInvalida(MissaoInvalidaException ex) {
+        LinkedHashMap<String, Object> body = new LinkedHashMap<>();
+        body.put("message", ex.getMessage());
+        body.put("timestamp", new Date());
+        body.put("error", "Missão inválida");
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
 
 }
