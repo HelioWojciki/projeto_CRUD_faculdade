@@ -104,5 +104,15 @@ public class GlobalExceptionHandler { // Trabalho com handlers
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(EntidadeInvalidaException.class)
+    public ResponseEntity<Object> entidadeInvalidaHandler(EntidadeInvalidaException ex) {
+    LinkedHashMap<String, Object> body = new LinkedHashMap<>();
+    body.put("message", ex.getMessage());
+    body.put("timespan", new Date());
+    body.put("error", "Entidade relacionada inválida");
+    body.put("status", HttpStatus.BAD_REQUEST.value());
+    return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
 
 }
